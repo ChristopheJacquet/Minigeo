@@ -3,7 +3,7 @@
 	<property name="doc.dir" value="doc" />
 
     <target name="javadoc">
-    	<delete dir="${doc.dir}"/>
+    	<!-- <delete dir="${doc.dir}"/> -->
         <javadoc 
         	access="public" 
         	author="true" 
