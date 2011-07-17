@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+	<property name="doc.dir" value="doc" />
+
+    <target name="javadoc">
+    	<delete dir="${doc.dir}"/>
+        <javadoc 
+        	access="public" 
+        	author="true" 
+        	classpath="." 
+        	destdir="${doc.dir}" 
+        	nodeprecated="false" 
+        	nodeprecatedlist="true" 
+        	noindex="false" 
+        	nonavbar="false" 
+        	notree="true" 
+        	packagenames="eu.jacquet80.minigeo" 
+        	source="1.5" 
+        	sourcepath="src" 
+        	splitindex="false" 
+        	use="false" 
+        	version="true"
+        	nohelp="true">
+        	
+            <link href="http://java.sun.com/javase/6/docs/api/"/>
+        	<bottom><![CDATA[<em>Copyright &#169; 2011 Christophe Jacquet. Licensed under the GPLv3. See the <a href="http://code.google.com/p/minigeo/">project homepage</a>.</em>]]></bottom>
+        </javadoc>
+    </target>
+	
+	<target name="jar">
+		<jar
+			destfile="minigeo.jar">
+			
+			<fileset dir="src" includes="**/*.java" />
+			<fileset dir="bin" />
+		</jar>
+	</target>
+</project>
