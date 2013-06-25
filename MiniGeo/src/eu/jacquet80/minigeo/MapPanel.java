@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,6 +20,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 class MapPanel extends JPanel {
 	private final List<Segment> segments = new ArrayList<Segment>();
+	private final List<POI> pois = new ArrayList<POI>();
 	private double minEasting, maxEasting, minNorthing, maxNorthing;
 	private double oEasting, oNorthing;		// coordinates of the origin
 	private double scale = -1;
@@ -42,6 +44,9 @@ class MapPanel extends JPanel {
 		
 		Graphics2D g = (Graphics2D) g_;
 		
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		int w = getWidth();
 		int h = getHeight();
 		
@@ -56,12 +61,21 @@ class MapPanel extends JPanel {
 			Point pB = seg.getPointB();
 			
 			g.setColor(seg.getColor());
+			g.setStroke(seg.getStroke());
+			
 			g.drawLine(
 					convertX(pA.getEasting()), convertY(pA.getNorthing(), h),
 					convertX(pB.getEasting()), convertY(pB.getNorthing(), h));
 		}
 		
 		g.setColor(Color.BLACK);
+		
+		for(POI poi : pois) {
+			int x = convertX(poi.getEasting());
+			int y = convertY(poi.getNorthing(), h);
+			g.fillOval(x-1, y-1, 3, 3);
+			g.drawString(poi.getLabel(), x, y);
+		}
 		
 		// unit is the unit of the scale. It must be a power of ten, such that unit * scale in [25, 250]
 		double unit = Math.pow(10, Math.ceil(Math.log10(25/scale)));
@@ -75,8 +89,9 @@ class MapPanel extends JPanel {
 		}
 	}
 	
-	public synchronized void clearSegments() {
+	public synchronized void clear() {
 		this.segments.clear();
+		this.pois.clear();
 		
 		resetMinMaxEastingNorthing();
 	}
@@ -90,6 +105,12 @@ class MapPanel extends JPanel {
 	
 	public void addSegments(Collection<Segment> segments) {
 		for(Segment seg : segments) addSegment(seg);
+	}
+	
+	public synchronized void addPOI(POI poi) {
+		this.pois.add(poi);
+		
+		updateMinMaxEastingNorthing(poi);
 	}
 	
 	private synchronized void updateMinMaxEastingNorthing(Point point) {
