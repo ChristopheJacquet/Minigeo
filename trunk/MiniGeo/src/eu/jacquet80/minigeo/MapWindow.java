@@ -30,17 +30,17 @@ public class MapWindow extends JFrame {
 	}
 	
 	/**
-	 * Deletes all the registered segments.
+	 * Deletes all the registered segments and POIs.
 	 */
-	public synchronized void clearSegments() {
-		map.clearSegments();
+	public void clear() {
+		map.clear();
 	}
 	
 	/**
 	 * Adds a segment to the list of segments to display.
 	 * @param segment the segment to add
 	 */
-	public synchronized void addSegment(Segment segment) {
+	public void addSegment(Segment segment) {
 		map.addSegment(segment);
 	}
 	
@@ -50,5 +50,13 @@ public class MapWindow extends JFrame {
 	 */
 	public void addSegments(Collection<Segment> segments) {
 		map.addSegments(segments);
+	}
+	
+	/**
+	 * Adds a point of interest (POI) to the list of POIs to display. 
+	 * @param poi the POI to add
+	 */
+	public void addPOI(POI poi) {
+		map.addPOI(poi);
 	}
 }

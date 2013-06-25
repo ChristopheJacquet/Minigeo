@@ -31,7 +31,7 @@ public class Point {
 	private static final int N0_SOUTH = 10000;		// southern hemisphere
 	
 	private static double k0 = .9996;
-	private static double a=6378.137;
+	private static double a=6378.137;				// Earth's radius
 	private static double e=.0818192;
 	
 	/**
@@ -82,6 +82,11 @@ public class Point {
 		easting = 500 + k0*a*nu*(A + (1-T+C)*A3/6 + (5-18*T+T*T)*A5/120);
 		northing = n0 + k0*a*(s + nu*tan(phi)*(A2/2 + (5-T+9*C+4*C*C)*A4/24 + (61-58*T+T*T)*A6/720));
 	}
+	
+	
+	public Point(Point a, Point b, double fraction) {
+		this(a.latitude + fraction * (b.latitude - a.latitude), a.longitude + fraction * (b.longitude - a.longitude));
+	}
 
 	/**
 	 * Returns the latitude of the point.
@@ -119,5 +124,23 @@ public class Point {
 		return northing;
 	}
 	
-	
+	/**
+	 * Returns the distance between this point and another point, in 
+	 * kilometers.
+	 * 
+	 * @param other another point
+	 * @return the distance between the points
+	 */
+	public double distanceTo(Point other) {
+		double ratio = Math.PI / 180;
+		double deltaLat = ratio * (other.latitude - this.latitude);
+		double deltaLon = ratio * (other.longitude - this.longitude);
+		
+		double angle = 2 * Math.asin( Math.sqrt(
+					Math.pow(Math.sin(deltaLat/2), 2) +
+					Math.cos(ratio * this.latitude) * Math.cos(ratio * other.latitude) *
+					Math.pow(Math.sin(deltaLon/2), 2) ) );
+		
+		return a * angle;
+	}
 }

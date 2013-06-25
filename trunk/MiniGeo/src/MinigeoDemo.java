@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import eu.jacquet80.minigeo.MapWindow;
+import eu.jacquet80.minigeo.POI;
 import eu.jacquet80.minigeo.Point;
 import eu.jacquet80.minigeo.Segment;
 
@@ -32,6 +33,8 @@ public class MinigeoDemo {
 				prec = cur;
 			} else errCount++;
 		}
+		
+		window.addPOI(new POI(new Point(48.8567, 2.3508), "Paris"));
 		
 		System.out.println("Read " + readCount + " lines; ignored " + errCount);
 		

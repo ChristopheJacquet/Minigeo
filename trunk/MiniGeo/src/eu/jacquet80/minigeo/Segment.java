@@ -1,6 +1,8 @@
 package eu.jacquet80.minigeo;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Stroke;
 
 /**
  * Segment of a linear shape, such as a road.
@@ -9,8 +11,11 @@ import java.awt.Color;
  *
  */
 public class Segment {
+	private final static Stroke BASIC_STROKE = new BasicStroke();
+	
 	private final Point pointA, pointB;
 	private final Color color;
+	private final Stroke stroke;
 	
 	/**
 	 * Creates a new segment.
@@ -20,9 +25,14 @@ public class Segment {
 	 * @param color the color of the segment
 	 */
 	public Segment(Point pointA, Point pointB, Color color) {
+		this(pointA, pointB, color, BASIC_STROKE);
+	}
+	
+	public Segment(Point pointA, Point pointB, Color color, Stroke stroke) {
 		this.pointA = pointA;
 		this.pointB = pointB;
 		this.color = color;
+		this.stroke = stroke;
 	}
 
 	/**
@@ -52,4 +62,7 @@ public class Segment {
 		return color;
 	}
 	
+	public Stroke getStroke() {
+		return stroke;
+	}	
 }
